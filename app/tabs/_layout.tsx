@@ -10,7 +10,7 @@ export default function Layout() {
       <Tabs.Screen
         name="tab1"
         options={{
-          title: "Tab 1",
+          title: "DashBoard",
           tabBarIcon(props) {
             return (
               <MaterialCommunityIcons
