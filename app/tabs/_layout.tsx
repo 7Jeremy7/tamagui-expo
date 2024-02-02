@@ -34,7 +34,7 @@ export default function Layout() {
       <Tabs.Screen
         name="tab2"
         options={{
-          title: "Tab 2",
+          title: "2da pagina",
           tabBarIcon(props) {
             return (
               <MaterialCommunityIcons

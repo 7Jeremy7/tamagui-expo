@@ -1,5 +1,6 @@
 import { Github, Twitter } from "@tamagui/lucide-icons";
 import { Link, useRouter } from "expo-router";
+import { ImageDemo } from "../components/ImageDemo";
 import {
   Button,
   H1,
@@ -22,11 +23,17 @@ export default function Home() {
         <YStack
           space="$4"
           maxWidth={600}
+          alignItems="center"
+          paddingTop="$10"
+         
         >
-          <H1 textAlign="center">Movie Making</H1>
+          <ImageDemo/>
         </YStack>
 
-        <YStack space="$2.5">
+        <YStack space="$2.5"
+        alignItems="center">
+        <H1 textAlign="center"
+        maxWidth={300}>Movie Making</H1>
           <Button onPress={() => router.push("/tabs")}>Begin</Button>
         </YStack>
         <YStack space="$5">
