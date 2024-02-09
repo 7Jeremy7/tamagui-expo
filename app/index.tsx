@@ -34,7 +34,7 @@ export default function Home() {
         alignItems="center">
         <H1 textAlign="center"
         maxWidth={300}>Movie Making</H1>
-          <Button onPress={() => router.push("/tabs")}>Begin</Button>
+          <Button onPress={() => router.push("/tabs")} style={{width:200}}>Begin</Button>
         </YStack>
         <YStack space="$5">
           <YGroup

@@ -1,51 +1,127 @@
-import { H5, Tabs, Text } from "tamagui";
+// Tab1.tsx
+import React, { useEffect, useState } from 'react';
+import { H1, H5, Tabs, Text, View, styled, Button } from 'tamagui';
+import { Pencil, Trash } from '@tamagui/lucide-icons';
+import { MyStack } from '../../components/MyStack';
+import { getApiMovie, getApiScene } from '../services/ApiMovie';
 
-import { MyStack } from "../../components/MyStack";
+interface Movie {
+  id: number,
+  title: string,
+  director: string,
+  duration: number,
+}
 
-export default function Tab1() {
+interface Scenes {
+  id: number,
+  description: string,
+  budget: number,
+  minutes: number,
+  filmId: number,
+}
+
+const Tab1: React.FC = () => {
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [scenes, setScenes] = useState<Scenes[]>([]);
+  const [selectedMovie, setSelectedMovie] = useState<Movie | null>(null);
+
+  const handleMovieClick = async (movieId: number) => {
+    try {
+      const sceneData = await getApiScene(movieId);
+      setScenes(sceneData);
+
+      const movieDetail = movies.find((movie) => movie.id === movieId);
+      setSelectedMovie(movieDetail);
+    } catch (error) {
+      console.error('Error fetching movie details or scenes:', error.message);
+    }
+  };
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const movieData = await getApiMovie();
+        setMovies(movieData);
+      } catch (error) {
+        console.error('Fetching error:', error.message);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   return (
     <MyStack>
-    <div className="film-container">
-      <Tabs defaultValue="tab1" orientation="vertical" flexDirection="row" width="100%">
+      <Tabs
+        defaultValue="tab1"
+        orientation="vertical"
+        flexDirection="row"
+        width="100%"
+      >
         <Tabs.List>
-          <Tabs.Tab value="tab1">
-            <Text>Film 1</Text>
-          </Tabs.Tab>
+          {movies.map((movie) => (
+            <StyledTab
+              key={movie.id}
+              value={`tab${movie.id}`}
+              onClick={() => handleMovieClick(movie.id)}
+            >
+              <H1>{movie.title}</H1>
+              <ContentApi>
+                <Text>Director: {movie.director}</Text>
+                <Text>Time: {movie.duration}</Text>
+              </ContentApi>
+              <IconEdit>
+                <Button
+                  icon={Pencil}
+                  style={{ borderRadius: 100, margin: 5 }}
+                ></Button>
+                <Button
+                  icon={Trash}
+                  style={{ borderRadius: 100, margin: 5 }}
+                ></Button>
+              </IconEdit>
+            </StyledTab>
+          ))}
         </Tabs.List>
-
-        <Tabs.Content value="tab1">
-          <H5>SubTab 1 Content</H5>
-        </Tabs.Content>
       </Tabs>
-    </div>
+      {selectedMovie && (
+        <View>
+          <H1>{selectedMovie.title} Scenes</H1>
+          <ul>
+            {scenes.map((scene) => (
+              <li key={scene.id}>
+                {scene.description} - Budget: {scene.budget}, Minutes:{' '}
+                {scene.minutes}
+              </li>
+            ))}
+          </ul>
+        </View>
+      )}
+    </MyStack>
+  );
+};
 
-    <div className="film-container">
-      <Tabs defaultValue="tab2" orientation="vertical" flexDirection="row" width="100%">
-        <Tabs.List>
-          <Tabs.Tab value="tab2">
-            <Text>Film 2</Text>
-          </Tabs.Tab>
-        </Tabs.List>
+const StyledTab = styled(Tabs.Tab, {
+  padding: 10,
+  margin: 27,
+  borderRadius: 10,
+  width: 330,
+  height: 170,
+  display: 'flex',
+  flexDirection: 'column',
+  alignItems: 'flex-start',
+});
 
-        <Tabs.Content value="tab2">
-          <H5>SubTab 2 Content</H5>
-        </Tabs.Content>
-      </Tabs>
-    </div>
+const ContentApi = styled(View, {
+  display: 'flex',
+  width: 100,
+  flexDirection: 'column',
+  marginTop: 10,
+});
 
-    <div className="film-container">
-      <Tabs defaultValue="tab3" orientation="vertical" flexDirection="row" width="100%">
-        <Tabs.List>
-          <Tabs.Tab value="tab3">
-            <Text>Film 3</Text>
-          </Tabs.Tab>
-        </Tabs.List>
+const IconEdit = styled(View, {
+  alignSelf: 'flex-end',
+  flexDirection: 'row-reverse',
+});
 
-        <Tabs.Content value="tab3">
-          <H5>SubTab 3 Content</H5>
-        </Tabs.Content>
-      </Tabs>
-    </div>
-  </MyStack>
-);
-}
+export default Tab1;

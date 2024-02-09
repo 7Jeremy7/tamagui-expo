@@ -11,6 +11,7 @@ export default function Layout() {
         name="tab1"
         options={{
           title: "DashBoard",
+          
           tabBarIcon(props) {
             return (
               <MaterialCommunityIcons
@@ -31,6 +32,7 @@ export default function Layout() {
           }
         }}
       />
+      
       <Tabs.Screen
         name="tab2"
         options={{
@@ -47,7 +49,7 @@ export default function Layout() {
             return (
               <Button
                 ml="$2.5"
-                onPress={() => router.push("/")}
+                onPress={() => router.push("../")}
               >
                 <MaterialCommunityIcons name="arrow-left" />
               </Button>

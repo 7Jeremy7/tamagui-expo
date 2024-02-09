@@ -24,3 +24,6 @@ export default function SwitchDemo() {
     </XStack>
   );
 }
+//localhost:8081/character
+//librería de react query
+//patrón adaptador
